@@ -6,7 +6,7 @@ import com.transfer.domain.model.*
 fun FxRateDto.toDomain(): Conversion {
     return Conversion(
         fromAmount = Money(
-            amount = toAmount,
+            amount = fromAmount,
             currency = Currency.fromCode(from)
         ),
         toAmount = Money(
