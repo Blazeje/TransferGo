@@ -38,6 +38,7 @@ dependencies {
     implementation(libs.retrofit)
     implementation(libs.okhttp)
     implementation(libs.moshi)
+    implementation(libs.moshi.kotlin)
     implementation(libs.retrofit.moshi)
     implementation(libs.kotlinx.coroutines.core)
     testImplementation(libs.junit)
