@@ -1,5 +1,6 @@
-package com.transfer.transfergo.ui
+package com.transfer.transfergo.ui.compose
 
+import android.graphics.drawable.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -22,6 +23,7 @@ import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -75,7 +77,6 @@ fun TransferScreen(
                     .clip(RoundedCornerShape(16.dp))
                     .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(16.dp))
             ) {
-                // Sending from section
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -121,7 +122,6 @@ fun TransferScreen(
                     }
                 }
 
-                // Receiver gets section
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -159,7 +159,6 @@ fun TransferScreen(
                 }
             }
 
-            // Swap Button - positioned between sections
             Surface(
                 modifier = Modifier
                     .align(Alignment.CenterStart)
@@ -172,16 +171,16 @@ fun TransferScreen(
                 shadowElevation = 2.dp
             ) {
                 Box(contentAlignment = Alignment.Center) {
-//                    Icon(
-//                        imageVector = Imagec,
-//                        contentDescription = "Swap",
-//                        tint = Color.White,
-//                        modifier = Modifier.size(20.dp)
-//                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.icon_reverse__button),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(32.dp)
+                            .clip(CircleShape),
+                    )
                 }
             }
 
-            // Rate Pill - positioned between sections
             val rateDisplay = state.resultText.substringAfter("@ ").trim()
             Surface(
                 modifier = Modifier
@@ -233,24 +232,24 @@ fun CurrencySelector(
                 fontWeight = FontWeight.Bold,
                 color = Color.Black
             )
-//            Icon(
-//                imageVector = Icons.Default.KeyboardArrowDown,
-//                contentDescription = null,
-//                tint = Color.LightGray,
-//                modifier = Modifier.size(20.dp)
-//            )
+            Spacer(modifier = Modifier.width(2.dp))
+            Image(
+                painter = painterResource(id = R.drawable.icon_arrow_down),
+                contentDescription = null,
+                modifier = Modifier.size(8.dp)
+            )
         }
 
         DropdownMenu(
             expanded = expanded,
             onDismissRequest = { expanded = false }
         ) {
-            Currency.entries.forEach { c ->
+            Currency.entries.forEach { currency ->
                 DropdownMenuItem(
                     text = {
                         Row(verticalAlignment = Alignment.CenterVertically) {
                             Image(
-                                painter = painterResource(id = getFlagResource(c)),
+                                painter = painterResource(id = getFlagResource(currency)),
                                 contentDescription = null,
                                 modifier = Modifier
                                     .size(24.dp)
@@ -258,11 +257,11 @@ fun CurrencySelector(
                                 contentScale = ContentScale.Crop
                             )
                             Spacer(modifier = Modifier.width(8.dp))
-                            Text(text = c.code)
+                            Text(text = currency.code)
                         }
                     },
                     onClick = {
-                        onCurrencySelected(c)
+                        onCurrencySelected(currency)
                         expanded = false
                     }
                 )
@@ -283,7 +282,7 @@ fun getFlagResource(currency: Currency): Int {
 @Preview(showBackground = true)
 @Composable
 fun TransferScreenPreview() {
-    val dummyState = State(
+    val state = State(
         fromCurrency = Currency.PLN,
         toCurrency = Currency.UAH,
         amount = 100.0,
@@ -292,7 +291,7 @@ fun TransferScreenPreview() {
 
     MaterialTheme {
         TransferScreen(
-            state = dummyState,
+            state = state,
             onEvent = { }
         )
     }
