@@ -111,15 +111,15 @@ class TransferViewModel @Inject constructor(
         if (stateOverride.error) return
 
         activeUiStateScope.launch {
-            try {
-                pushInternal(InternalEvent.Loading)
+            pushInternal(InternalEvent.Loading)
 
-                val conversion = repository.convert(
+            runCatching {
+                repository.convert(
                     from = stateOverride.fromCurrency,
                     to = stateOverride.toCurrency,
                     amount = amount,
                 )
-
+            }.onSuccess { conversion ->
                 pushInternal(
                     InternalEvent.ConversionUpdated(
                         fromAmount = format(conversion.fromAmount.amount),
@@ -127,12 +127,17 @@ class TransferViewModel @Inject constructor(
                         rate = conversion.rate.rate,
                     ),
                 )
-            } catch (e: IOException) {
-                pushInternal(InternalEvent.Error(e.message.orEmpty()))
-                _state.value = stateOverride.copy(networkError = true)
-            } catch (e: Exception) {
-                emitEffect(Effect.ShowError(e.message ?: "Unknown error"))
-                pushInternal(InternalEvent.Error(e.message.orEmpty()))
+            }.onFailure { e ->
+                when (e) {
+                    is IOException -> {
+                        pushInternal(InternalEvent.Error(e.message.orEmpty()))
+                        _state.value = stateOverride.copy(networkError = true)
+                    }
+                    else -> {
+                        emitEffect(Effect.ShowError(e.message ?: "Unknown error"))
+                        pushInternal(InternalEvent.Error(e.message.orEmpty()))
+                    }
+                }
             }
         }
     }

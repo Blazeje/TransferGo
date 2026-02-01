@@ -48,7 +48,6 @@ fun TransferScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(Color(0xFFF8F9FB))
             .padding(16.dp),
         verticalArrangement = Arrangement.Top,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -73,7 +72,7 @@ fun TransferScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(16.dp))
-                    .border(1.dp, Color(0xFFE0E0E0), RoundedCornerShape(16.dp)),
+                    .border(1.dp, colorResource(R.color.light_grey), RoundedCornerShape(16.dp)),
             ) {
                 Box(
                     modifier = Modifier
@@ -113,7 +112,7 @@ fun TransferScreen(
                                     fontWeight = FontWeight.Bold,
                                     textAlign = TextAlign.End,
                                 ),
-                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                 modifier = Modifier.weight(1f),
                             )
                         }

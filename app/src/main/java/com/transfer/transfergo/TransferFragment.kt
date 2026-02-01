@@ -5,12 +5,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.transfer.transfergo.ui.compose.TransferScreen
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -30,6 +33,17 @@ class TransferFragment : Fragment() {
             )
             setContent {
                 MaterialTheme {
+                    val systemUiController = rememberSystemUiController()
+                    SideEffect {
+                        systemUiController.setStatusBarColor(
+                            color = Color(0xFFF8F9FB),
+                            darkIcons = true,
+                        )
+                        systemUiController.setNavigationBarColor(
+                            color = Color(0xFFF8F9FB),
+                            darkIcons = true,
+                        )
+                    }
                     val state by viewModel.state.collectAsStateWithLifecycle()
 
                     TransferScreen(
