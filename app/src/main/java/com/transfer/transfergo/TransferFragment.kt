@@ -11,7 +11,7 @@ import androidx.compose.ui.platform.ViewCompositionStrategy
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.transfer.transfergo.ui.TransferScreen
+import com.transfer.transfergo.ui.compose.TransferScreen
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

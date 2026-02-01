@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">TransferGo</string>
     <string name="sending_from">Sending from</string>
-    <string name="receiver_to">Receiver to</string>
+    <string name="receiver_gets">Receiver gets</string>
     <string name="search">Search</string>
     <string name="all_countries">All countries</string>
     <string name="polish_zloty">Polish zloty</string>
