@@ -6,9 +6,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -20,11 +18,10 @@ abstract class MviViewModel<STATE, EVENT, INTERNAL_EVENT, EFFECT>(
 
     protected val activeUiStateScope = viewModelScope
 
-    private val _state = MutableStateFlow(initialState)
+    protected val _state = MutableStateFlow(initialState)
     val state: StateFlow<STATE> = _state.asStateFlow()
 
     private val _effects = MutableSharedFlow<EFFECT>()
-    val effects: SharedFlow<EFFECT> = _effects.asSharedFlow()
 
     fun push(event: EVENT) {
         viewModelScope.launch(eventsDispatcher) {
@@ -44,11 +41,11 @@ abstract class MviViewModel<STATE, EVENT, INTERNAL_EVENT, EFFECT>(
 
     protected abstract fun onHandleUiEvent(
         uiEvent: EVENT,
-        state: STATE
+        state: STATE,
     )
 
     protected abstract fun reduce(
         event: INTERNAL_EVENT,
-        state: STATE
+        state: STATE,
     ): STATE
 }

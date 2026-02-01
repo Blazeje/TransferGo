@@ -22,22 +22,21 @@ class TransferFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
-        savedInstanceState: Bundle?
+        savedInstanceState: Bundle?,
     ): View =
         ComposeView(requireContext()).apply {
             setViewCompositionStrategy(
-                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed
+                ViewCompositionStrategy.DisposeOnViewTreeLifecycleDestroyed,
             )
             setContent {
                 MaterialTheme {
                     val state by viewModel.state.collectAsStateWithLifecycle()
 
-                    TransferScreen (
+                    TransferScreen(
                         state = state,
-                        onEvent = viewModel::push
+                        onEvent = viewModel::push,
                     )
                 }
             }
         }
 }
-

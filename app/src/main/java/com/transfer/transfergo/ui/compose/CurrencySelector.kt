@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,10 +31,11 @@ import androidx.compose.ui.unit.sp
 import com.transfer.domain.model.Currency
 import com.transfer.transfergo.R
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencySelector(
     currency: Currency,
-    onCurrencySelected: (Currency) -> Unit
+    onCurrencySelected: (Currency) -> Unit,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -43,7 +45,7 @@ fun CurrencySelector(
             modifier = Modifier
                 .clip(RoundedCornerShape(8.dp))
                 .clickable { expanded = true }
-                .padding(vertical = 4.dp)
+                .padding(vertical = 4.dp),
         ) {
             Image(
                 painter = painterResource(id = getFlagResource(currency)),
@@ -51,26 +53,26 @@ fun CurrencySelector(
                 modifier = Modifier
                     .size(32.dp)
                     .clip(CircleShape),
-                contentScale = ContentScale.Crop
+                contentScale = ContentScale.Crop,
             )
             Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = currency.code,
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold,
-                color = Color.Black
+                color = Color.Black,
             )
             Spacer(modifier = Modifier.width(2.dp))
             Image(
                 painter = painterResource(id = R.drawable.icon_arrow_down),
                 contentDescription = null,
-                modifier = Modifier.size(8.dp)
+                modifier = Modifier.size(8.dp),
             )
         }
 
         DropdownMenu(
             expanded = expanded,
-            onDismissRequest = { expanded = false }
+            onDismissRequest = { expanded = false },
         ) {
             Currency.entries.forEach { currency ->
                 DropdownMenuItem(
@@ -82,7 +84,7 @@ fun CurrencySelector(
                                 modifier = Modifier
                                     .size(24.dp)
                                     .clip(CircleShape),
-                                contentScale = ContentScale.Crop
+                                contentScale = ContentScale.Crop,
                             )
                             Spacer(modifier = Modifier.width(8.dp))
                             Text(text = currency.code)
@@ -91,9 +93,18 @@ fun CurrencySelector(
                     onClick = {
                         onCurrencySelected(currency)
                         expanded = false
-                    }
+                    },
                 )
             }
         }
+    }
+}
+
+fun getFlagResource(currency: Currency): Int {
+    return when (currency) {
+        Currency.PLN -> R.drawable.icon_poland
+        Currency.EUR -> R.drawable.icon_germany
+        Currency.GBP -> R.drawable.icon_great_britain
+        Currency.UAH -> R.drawable.icon_ukraine
     }
 }
