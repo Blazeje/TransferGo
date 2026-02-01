@@ -10,7 +10,6 @@ import com.transfer.transfergo.ui.MviViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import java.io.IOException
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -60,7 +59,7 @@ class TransferViewModel @Inject constructor(
 
                 refresh(
                     state.copy(
-                        fromAmountInput = format(fromAmount),
+                        fromAmountInput = NumberFormater.amount(fromAmount),
                         error = isTooLarge,
                     ),
                 )
@@ -122,8 +121,8 @@ class TransferViewModel @Inject constructor(
             }.onSuccess { conversion ->
                 pushInternal(
                     InternalEvent.ConversionUpdated(
-                        fromAmount = format(conversion.fromAmount.amount),
-                        toAmount = format(conversion.toAmount.amount),
+                        fromAmount = NumberFormater.amount(conversion.fromAmount.amount),
+                        toAmount = NumberFormater.amount(conversion.toAmount.amount),
                         rate = conversion.rate.rate,
                     ),
                 )
@@ -142,6 +141,3 @@ class TransferViewModel @Inject constructor(
         }
     }
 }
-
-private fun format(value: Double): String =
-    "%.2f".format(Locale.US, value)

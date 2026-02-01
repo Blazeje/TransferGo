@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -36,6 +35,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.transfer.domain.model.Currency
+import com.transfer.transfergo.NumberFormater
 import com.transfer.transfergo.R
 import com.transfer.transfergo.TransferContract.Event
 import com.transfer.transfergo.TransferContract.State
@@ -192,18 +192,20 @@ fun TransferScreen(
 }
 
 @Composable
-private fun ExchangeRateBadge(modifier: Modifier, state: State) {
-    val rateDisplay = state.toAmountInput.substringAfter("@ ").trim()
+private fun ExchangeRateBadge(
+    modifier: Modifier,
+    state: State,
+) {
+    if (state.rate == 0.0) return
 
     Surface(
         modifier = modifier
-            .offset(y = 0.dp)
             .zIndex(1f),
         shape = RoundedCornerShape(12.dp),
         color = colorResource(R.color.black),
     ) {
         Text(
-            text = "1 ${state.fromCurrency.code} = $rateDisplay ${state.toCurrency.code}",
+            text = "1 ${state.fromCurrency.code} = ${NumberFormater.rate(state.rate)} ${state.toCurrency.code}",
             color = colorResource(R.color.white),
             fontSize = 10.sp,
             fontWeight = FontWeight.Bold,
